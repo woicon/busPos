@@ -1,0 +1,241 @@
+/* === 弹层样式  (start) === */
+/* === messages === */
+
+/* 让浮层背后整个页面禁止滚动CSS名称start */
+.noscroll,
+.noscroll body {
+  overflow: hidden;
+}
+
+.noscroll body {
+  position: relative;
+}
+/* 让浮层背后整个页面禁止滚动CSS名称end */
+
+.message {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  display: table;
+  background: transparent;
+  &.mask {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+  &.message-show {
+    visibility: visible;
+  }
+
+  .message-dialog {
+    display: table-cell;
+    vertical-align: middle;
+
+    /* 默认样式 */
+    .message-content {
+      max-width: 540px;
+      margin: 0px auto;
+      background-color: #fff;
+      border-radius: 7px;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+      .message-header .message-title {
+        font-size: 16px;
+        font-weight: 300;
+        color: #333;
+        text-align: center;
+        padding-top: 15px;
+      }
+      .message-body {
+        position: relative;
+        overflow: hidden;
+        .message-body-content {
+          padding: 10px 15px;
+          color: #333;
+        }
+      }
+      .message-footer {
+        height: 42px;
+        line-height: 42px;
+        text-align: center;
+        border-top: 1px solid #e4e4e4;
+        font-size: 16px;
+      }
+    }
+
+    /* 消息提示 */
+    &.info .message-content,
+    &.error .message-content,
+    &.warning .message-content,
+    &.success .message-content {
+      box-shadow: none;
+      color: #fff;
+      font-size: 14px;
+      width: auto;
+      background: none;
+      text-align: center;
+
+      .message-body {
+        padding: 10px 20px;
+        box-sizing: border-box;
+        background-color: rgba(0, 0, 0, 0.6);
+        text-align: center;
+        max-height: 250px;
+        border-radius: 5px;
+        display: inline-block;
+        margin: 0 20px;
+
+        .message-body-content {
+          padding: 0;
+          color: #fff;
+          display: inline-block;
+          text-align: initial;
+        }
+      }
+    }
+    /* 提示框,确认框默认样式 start */
+    &.alert,
+    &.confirm,
+    &.prompt {
+      .message-content {
+        width: 270px;
+        border-radius: 10px;
+
+        .message-header .message-title {
+          font-size: 17px;
+          font-weight: bold;
+          color: #000;
+          text-align: center;
+        }
+
+        .message-body {
+          min-height: 60px;
+          line-height: 25px;
+          font-size: 15px;
+        }
+      }
+    }
+    /* 提示框,确认框默认样式 end */
+
+    /* 提示框样式 start */
+    &.alert .message-content .message-footer .message-button.alert {
+      width: 100%;
+      text-align: center;
+      color: #09bb07;
+    }
+    /* 提示框样式 end */
+
+    /* 确认框默认样式 start */
+    &.confirm .message-content .message-footer,
+    &.prompt .message-content .message-footer {
+      color: #666;
+
+      .message-button:first-child {
+        border-right: 1px solid #e4e4e4;
+        box-sizing: border-box;
+      }
+
+      .message-button {
+        width: 50%;
+        float: left;
+      }
+
+      .message-button.ok {
+        color: #09bb07;
+        font-weight: bold;
+      }
+    }
+
+    &.prompt .message-content {
+      .message-header .message-title {
+        font-size: 15px;
+        font-weight: normal;
+        color: #000;
+      }
+
+      .message-body .message-body-content input.input-text {
+        border: none;
+        outline-offset: 0;
+        outline-style: none;
+        outline-width: 0;
+        font-size: 14px;
+        line-height: 25px;
+        height: 25px;
+      }
+    }
+
+    /* 确认框默认样式 end */
+
+    /* 多个按钮横排样式 start*/
+    &.multiple .message-content {
+      width: 90%;
+      max-width: 450px;
+
+      .message-footer {
+        color: #09bb07;
+        display: flex;
+        justify-content: space-between;
+
+        .message-button {
+          flex: 1;
+        }
+
+        .message-button:not(:last-child) {
+          border-right: 1px solid #e4e4e4;
+          box-sizing: border-box;
+        }
+      }
+    }
+    /* 多个按钮横排样式 end*/
+
+    /* 多个按钮竖排 start*/
+    &.vertical .message-content {
+      width: 90%;
+      max-width: 450px;
+
+      .message-footer {
+        color: #09bb07;
+        height: auto;
+
+        .message-button {
+          width: 100%;
+          height: 42px;
+        }
+
+        .message-button:not(:first-child) {
+          border-top: 1px solid #e4e4e4;
+          box-sizing: border-box;
+        }
+      }
+    }
+    /* 多个按钮竖排 end*/
+
+    &.bottom-sheet {
+      vertical-align: bottom;
+
+      .message-content {
+        width: 100%;
+        max-width: 540px;
+        border-radius: 0px;
+
+        .message-footer {
+          color: #09bb07;
+          height: auto;
+
+          .message-button {
+            width: 100%;
+            height: 42px;
+          }
+
+          .message-button:not(:first-child) {
+            border-top: 1px solid #e4e4e4;
+            box-sizing: border-box;
+          }
+        }
+      }
+    }
+  }
+}

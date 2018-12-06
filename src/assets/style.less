@@ -1,0 +1,65 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  font-family: sans-serif;
+}
+@import "./icon.less";
+@import "./message.less";
+
+@green: #1aad19;
+html {
+  color: #444;
+}
+.button {
+  margin: 0 40px;
+  background: #444;
+  color: #fff;
+  text-align: center;
+  padding: 12px 0;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  display: block;
+  font-size: 16px;
+  border-radius: 2px;
+  transition: 0.3s;
+  &:hover {
+    opacity: 0.7;
+  }
+  &-green {
+    background: @green;
+    color: #fff;
+  }
+  &-blue {
+    background: #108ee9;
+    color: #fff;
+  }
+}
+button {
+  display: block;
+}
+input[type="text"],
+input[type="password"] {
+  outline: none;
+  font-size: 14px;
+  padding: 15px 0;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+}
+.bline {
+  position: relative;
+  &::before {
+    content: "";
+    display: block;
+    border-bottom: 1px solid #ccc;
+    transform: scaleX(0.5);
+    position: absolute;
+    left: -50%;
+    right: -50%;
+    bottom: 0;
+  }
+}
