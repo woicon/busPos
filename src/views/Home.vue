@@ -11,7 +11,7 @@
     </div>
     <div class="heads">
       <div class="toggle" @click="toggleCount">
-        <div class="ico ico-mins" id="min"></div>
+        <div class="ico ico-mins" :class="{btndisable:order.psgNum==1}" id="min"></div>
         <div class="value">{{order.psgNum}}</div>
         <div class="ico ico-add" id="add"></div>
       </div>
@@ -20,19 +20,19 @@
       </div>
       <div class="info">请输入购票数量</div>
     </div>
-    <!-- <div class="list">
-                <div class="ico">
-                    <div class="ico-paytype"></div>
-                    <div>收款</div>
-                </div>
-                 <div class="ico">
-                    <div class="ico-paytype"></div>
-                    <div>收款</div>
-                </div>
-                    <div class="ico">
-                    <div class="ico-paytype"></div>
-                    <div>帮助</div>
-                </div>
+<!-- <div class="list">
+          <div class="ico">
+              <div class="ico-paytype"></div>
+              <div>收款</div>
+          </div>
+            <div class="ico">
+              <div class="ico-paytype"></div>
+              <div>收款</div>
+          </div>
+              <div class="ico">
+              <div class="ico-paytype"></div>
+              <div>帮助</div>
+          </div>
     </div>-->
   </div>
 </template>
@@ -96,7 +96,7 @@ export default {
       });
     },
     scanCode(orderId) {
-      this.$android.twoCode();
+      this.$android.twoCode(false);
     },
     toggleCount(e) {
       let count = this.order.psgNum;
@@ -105,7 +105,7 @@ export default {
           this.order.psgNum = count + 1;
           break;
         case "min":
-          this.order.psgNum = count > 0 ? count - 1 : count;
+          this.order.psgNum = count > 1 ? count - 1 : count;
           break;
       }
     }
@@ -114,6 +114,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.btndisable{
+  opacity:.4;
+}
 .head {
   display: flex;
   align-items: center;

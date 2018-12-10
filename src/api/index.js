@@ -1,7 +1,7 @@
 import axios from 'axios';
 import http from './baseAjax';
-const host = 'app';
-//const host = 'http://61.191.56.32:8088/app';
+//const host = 'app';
+const host = 'http://61.191.56.32:8088/app';
 export default {
   login: (params) => axios.post(`${host}/loginIn`, params),
   currentOrders: (params) => http(`${host}/currentOrders`, params),

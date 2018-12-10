@@ -111,8 +111,8 @@ export default {
           orderId: this.$route.query.orderId
         };
         this.$api.scanByUser(params).then(res => {
-          console.log(res);
-          this.$message(JSON.stringify(res));
+          //console.log(res);
+          //this.$message(JSON.stringify(res));
           if (res.status) {
             this.toDetail();
           } else {
@@ -128,13 +128,12 @@ export default {
       this.$api.getPayImage(params).then(res => {
         console.log(res);
         this.ewm = res.data.imageUrl;
-
         document.getElementById("qrcode").innerHTML = "";
         this.qrcode(res.data.imageUrl);
       });
     },
     scanCode(orderId) {
-      this.$android.twoCode();
+      this.$android.twoCode(true);
     },
     toDetail() {
       let query = {
