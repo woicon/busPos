@@ -1,33 +1,49 @@
 <template>
-    <div class="pays">
-        <div class="pay">
-            <input type="text" id="payCode" v-model="payCode">
-            <div class="heads">
-                <div class="heads-title">收款金额</div>
-                <div class="heads-total">{{order.payprice}}</div>
-                <div class="head-source">×{{order.psgnum}}张</div>
-            </div>
-            <div id="qrcode" class="qrcode">
-            </div>
-            <div class="info">{{payType[currentPay]}}
-                <div>用户扫码支付</div>
-            </div>
-
-            <div class="buttons">
-                <div @click="scanCode" class="button" :class="[currentPay == 'WXPAY' ? 'button-green' : 'button-blue']"><i class="ico ico-scan"></i>扫描用户二维码收款</div>
-            </div>
-
-            <div class="toggle" @click="togglePay">
-                <div v-for='(item, index) in payType' :id='index' :class='{active:currentPay == index}' :key='index'>
-                    <i class="ico" :class="[index == 'WXPAY' ? 'ico-wxpay' : 'ico-alipay' ]"></i>{{item}}
-                </div>
-            </div>
-        </div>
+  <div class="pays">
+    <div class="header">
+      <div class="header-back" @click="backPage"></div>
+      <div class="header-title">收款</div>
     </div>
+    <div class="pay">
+      <input type="text" id="payCode" hidden ref="payCode" v-model="payCode">
+      <div class="heads">
+        <div class="heads-title">收款金额</div>
+        <div class="heads-total">{{order.payprice}}</div>
+        <div class="head-source" v-if="order.ordersource !=3">×{{order.psgnum}}张</div>
+      </div>
+      <div id="qrcode" class="qrcode"></div>
+      <div class="info">
+        {{payType[currentPay]}}
+        <div>用户扫码支付</div>
+      </div>
+      <div class="buttons">
+        <div
+          @click="scanCode"
+          class="button"
+          :class="[currentPay == 'WXPAY' ? 'button-green' : 'button-blue']"
+        >
+          <i class="ico ico-scan"></i>扫描用户二维码收款
+        </div>
+      </div>
+
+      <div class="toggle" @click="togglePay">
+        <div
+          v-for="(item, index) in payType"
+          :id="index"
+          :class="{active:currentPay == index}"
+          :key="index"
+        >
+          <i class="ico" :class="[index == 'WXPAY' ? 'ico-wxpay' : 'ico-alipay' ]"></i>
+          {{item}}
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script type="text/javascript">
 import QRCode from "qrcodejs2";
+
 export default {
   name: "login",
   data() {
@@ -44,7 +60,7 @@ export default {
         WXPAY: "微信收款",
         ALIPAY: "支付宝收款"
       },
-      payCode: "null"
+      payCode: 2
     };
   },
 
@@ -56,18 +72,18 @@ export default {
   },
 
   watch: {
-    payCode: function(code, oldVal) {
-      this.$message("code::" + code + ":::" + oldVal);
-      this.scanByUser(code);
+    payCode: {
+      handler: function(code, oldVal) {
+        console.log("watch", code, oldVal);
+        // this.$message("code::" + code + ":::" + oldVal);
+        this.scanByUser(code);
+      },
+      deep: true
     }
   },
-  updated() {
-    this.$message(
-      "appppppp:::" +
-        document.getElementById("payCode").innerHTML +
-        "::::::" +
-        this.payCode
-    );
+  beforeDestroy() {
+    console.log("beforeDestroy");
+    this.$forceUpdate();
   },
   methods: {
     qrcode(text) {
@@ -78,7 +94,9 @@ export default {
         text: text // 二维码内容
       });
     },
-
+    backPage() {
+      this.$router.go(-1);
+    },
     togglePay(e) {
       console.log(e);
       this.currentPay = e.target.id;
@@ -110,6 +128,7 @@ export default {
       this.$api.getPayImage(params).then(res => {
         console.log(res);
         this.ewm = res.data.imageUrl;
+
         document.getElementById("qrcode").innerHTML = "";
         this.qrcode(res.data.imageUrl);
       });
@@ -149,6 +168,7 @@ export default {
   right: 0;
   top: 0;
   bottom: 0;
+  padding-top: 30px;
 }
 
 .head-source {
@@ -157,7 +177,7 @@ export default {
 
 .heads {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   padding: 30px 0 10px;
   &-title {
     color: #666;

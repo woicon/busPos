@@ -10,21 +10,22 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no" />
-  <script>
-    let payCode;
 
-    function getCode(arg) {
-      //获取到的二维码
-      document.getElementById("payCode").value = arg
-      payCode = arg
-    }
-    console.log(payCode)
-
-  </script>
 </head>
 
 <body>
   <div id="app"></div>
 </body>
+<script>
+  function getCode(arg) {
+    console.log(vm)
+    if (vm.$children[0].$children[0]._data.payCode) {
+      vm.$children[0].$children[0]._data.payCode = arg
+    } else if (vm.$children[0].$children[0].$children[0]._data.orderId) {
+      vm.$children[0].$children[0].$children[0]._data.orderId = arg
+    }
+  }
+
+</script>
 
 </html>

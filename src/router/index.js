@@ -4,10 +4,15 @@ import Layout from '@/views/Layout'
 import Login from '@/views/Login'
 import NotFound from '@/views/404'
 import Paydetail from '@/views/PayOk'
+import Home from '@/views/Home'
+import Member from '@/views/Member'
+import Pay from '@/views/Pay'
+import Pos from '@/views/Pos'
+import Report from '@/views/Report'
 
 Vue.use(Router)
 export default new Router({
-  //mode: 'history',
+  mode: 'history',
   routes: [{
       path: '/login',
       name: 'login',
@@ -26,28 +31,28 @@ export default new Router({
       component: Layout,
       children: [{
           path: '/home',
-          component: () => import('@/views/Home'),
+          component: Home,
           name: '首页',
         },
         {
           path: '/report',
-          component: () => import('@/views/Report'),
+          component: Report,
           name: '报表',
         },
         {
           path: '/member',
-          component: () => import('@/views/Member'),
+          component: Member,
           name: '会员中心',
         },
-
+        {
+          path: '/pos',
+          name: '收款',
+          component: Pos,
+          hidden: true
+        },
       ],
     },
-    {
-      path: '/pos',
-      name: '收款',
-      component: () => import('@/views/Pos'),
-      hidden: true
-    },
+
     {
       path: '/pay',
       name: '支付',

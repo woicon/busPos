@@ -54,12 +54,61 @@ input[type="password"] {
   position: relative;
   &::before {
     content: "";
-    display: block;
-    border-bottom: 1px solid #ccc;
-    transform: scaleX(0.5);
     position: absolute;
-    left: -50%;
     right: -50%;
+
     bottom: 0;
+    left: -50%;
+    display: block;
+    height: 1px;
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    border-top: 1px solid #ccc;
   }
+}
+
+.header {
+  text-align: center;
+  position: relative;
+  background: #fff;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 50px;
+  box-shadow: 1px 3px 9px rgba(0, 0, 0, 0.1);
+  &-title {
+    font-size: 17px;
+    margin: 0 50px;
+    text-align: center;
+    line-height: 50px;
+  }
+  &-back {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    width: 50px;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+    &:after {
+      content: "";
+      display: block;
+      width: 9px;
+      height: 9px;
+      border: 2px solid #ddd;
+      border-right: none;
+      border-top: none;
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }

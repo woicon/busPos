@@ -1,10 +1,11 @@
 <template>
   <div>
     <div class="head">
-      <div>
-        <i class="ico ico-cash"></i> 收款
+      <div @click="toPos">
+        <i class="ico ico-cash"></i>收款
       </div>
-      <div>
+      <div @click="scanCode">
+        <input type="text" ref="orderId" hidden id="orderId" v-model="orderId">
         <i class="ico ico-buy"></i> 取票
       </div>
     </div>
@@ -46,12 +47,33 @@ export default {
         appKey: sessionStorage.getItem("appKey"),
         sn: this.$android.getAndroidId(),
         orderSource: 1
-      }
+      },
+      orderId: 2
     };
   },
   created() {
     this.order.appKey = sessionStorage.getItem("appKey");
-    this.$message(this.$android.getAndroidId());
+    // this.$message(this.$android.getAndroidId());
+  },
+  destroyed() {
+    this.$destroy();
+  },
+  watch: {
+    orderId: {
+      handler: function(code, oldVal) {
+        console.log("watch", code, oldVal);
+        // this.$message("code::" + code + ":::" + oldVal);
+        this.createOrder({
+          psgNum: 1,
+          appKey: sessionStorage.getItem("appKey"),
+          sn: this.$android.getAndroidId(),
+          orderSource: 2,
+          busKey: code,
+          psgNum: 1
+        });
+      },
+      deep: true
+    }
   },
   methods: {
     createOrder(params) {
@@ -68,8 +90,15 @@ export default {
         }
       });
     },
+    toPos() {
+      this.$router.push({
+        path: "/pos"
+      });
+    },
+    scanCode(orderId) {
+      this.$android.twoCode();
+    },
     toggleCount(e) {
-      console.log(e);
       let count = this.order.psgNum;
       switch (e.target.id) {
         case "add":

@@ -7,9 +7,8 @@ import router from "@/router";
 import "./assets/style.less";
 import api from "@/api";
 import MobileMessage from 'mobile-message';
-import MintUI from 'mint-ui';
-Vue.use(MintUI);
-console.log(MobileMessage);
+//Vue.use(MintUI);
+
 Vue.use(MobileMessage);
 
 Vue.prototype.$api = api;
@@ -19,9 +18,8 @@ router.beforeEach((to, from, next) => {
   if (to.path == '/login') {
     sessionStorage.removeItem('appKey')
   }
-  let appKey = sessionStorage.getItem('appKey')
-  console.log(appKey)
-  if (!appKey && to.path != '/login') {
+
+  if (!sessionStorage.getItem('appKey') && to.path != '/login') {
     // window.location.reload();
     next({
       path: '/login'
@@ -68,3 +66,5 @@ var vm = new Vue({
   router,
   render: h => h(App)
 }).$mount("#app");
+
+window.vm = vm

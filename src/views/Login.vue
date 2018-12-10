@@ -1,20 +1,25 @@
 <template>
-    <div class="login">
-        <form @submit.prevent="login">
-        <div class="line bline">
-            <i class="ico-user"></i>
-            <div>
-                <input name="loginName" v-model="loginData.loginName" type="text" placeholder="请输入账号"></div>
-        </div>
-        <div class="line bline">
-            <i class="ico-lock"></i>
-            <div>
-                <input name="loginPwd" v-model="loginData.loginPwd" type="password" placeholder="请输入密码"></div>
-        </div>
-        <input type="hidden" name="deviceSN" v-model="loginData.deviceSN">
-        <button type="submit" class="button button-green">登录</button>
-        </form>
+  <div class="login">
+    <div class="logo">
+      <img src="@/assets/images/logo.png" alt>
     </div>
+    <form @submit.prevent="login">
+      <div class="line bline">
+        <i class="ico-user"></i>
+        <div>
+          <input name="loginName" v-model="loginData.loginName" type="text" placeholder="请输入账号">
+        </div>
+      </div>
+      <div class="line bline">
+        <i class="ico-lock"></i>
+        <div>
+          <input name="loginPwd" v-model="loginData.loginPwd" type="password" placeholder="请输入密码">
+        </div>
+      </div>
+      <input type="hidden" name="deviceSN" v-model="loginData.deviceSN">
+      <button type="submit" class="button button-green">登录</button>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -41,7 +46,7 @@ export default {
           sessionStorage.setItem("appKey", data.data.appKey);
           this.$router.push({ path: "/home" });
         } else {
-          alert(data.errorMsg);
+          this.$message(data.errorMsg);
         }
       });
     }
@@ -77,6 +82,13 @@ input {
 
 .button {
   margin-top: 20px;
+}
+.logo {
+  img {
+    width: 60%;
+    display: block;
+    margin: 0 auto 30px;
+  }
 }
 </style>
 

@@ -1,31 +1,33 @@
 <template>
-    <div class="pos">
-        <div class="head">
-            <div class="num">
-                {{total}}
-            </div>
-        </div>
-        <div class="keyborder">
-            <div class="key" @click="touchKey">
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
-                <div>4</div>
-                <div>5</div>
-                <div>6</div>
-                <div>7</div>
-                <div>8</div>
-                <div>9</div>
-                <div>.</div>
-                <div>0</div>
-                <div class="ico-key"></div>
-            </div>
-            <div class="skey">
-                <div class="ico ico-delnum" @click="delNum"></div>
-                <div class="check" @click="creatOrder">收款</div>
-            </div>
-        </div>
+  <div class="pos">
+    <div class="head">
+      <div class="head-title">收款金额</div>
+      <div class="num">
+        <b>¥</b>
+        <sub>{{order.posPrice}}</sub>
+      </div>
     </div>
+    <div class="keyborder bline">
+      <div class="key" @click="touchKey">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
+        <div>6</div>
+        <div>7</div>
+        <div>8</div>
+        <div>9</div>
+        <div>.</div>
+        <div>0</div>
+        <div class="ico-key"></div>
+      </div>
+      <div class="skey">
+        <div class="ico ico-delnum" @click="delNum"></div>
+        <div class="check" @click="createOrder">收款</div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -33,42 +35,72 @@ export default {
   name: "Pos",
   data() {
     return {
-      total: 0
+      order: {
+        appKey: sessionStorage.getItem("appKey"),
+        sn: this.$android.getAndroidId(),
+        psgNum: 1,
+        orderSource: 3,
+        posPrice: "0"
+      }
     };
   },
-  created() {
-    this.$message("hello world!");
-  },
+  created() {},
   methods: {
     touchKey(e) {
-      console.log(e);
-      let total = this.total;
+      let total = this.order.posPrice;
       let num = e.target.innerText;
-      console.log(num);
+      let totals = total + num;
       let decimalReg = /^\d{0,8}\.{0,1}(\d{1,2})?$/;
-      let _total = `${total}${num}`;
-      console.log(_total);
-      let nums = total == "0" ? total : num;
-      console.log(nums);
-      let totals =
-        total == "0"
-          ? nums != "."
-            ? nums
-            : "0."
-          : decimalReg.test(_total)
-            ? _total
-            : total;
-
-      this.total = totals;
+      if (total == "0" && num != ".") {
+        totals = num;
+      } else if (num == "." && total == "0") {
+        totals = "0.";
+      } else if (!decimalReg.test(totals)) {
+        totals = total;
+      } else if (total.indexOf(".") != -1 && num == ".") {
+        totals = total;
+      }
+      this.order.posPrice = totals;
       console.log(totals);
     },
-    delNum() {},
-    creatOrder() {}
+    delNum() {
+      let total = this.order.posPrice,
+        totalsLength = total.length,
+        newTotal = total.substring(0, totalsLength - 1);
+      this.order.posPrice = newTotal == "" ? "0" : newTotal;
+    },
+    createOrder(params) {
+      // 默认1 买票 2 取票 3 pos扫码支付
+      if (this.order.posPrice > 0) {
+        this.$api.createOrder(this.order).then(res => {
+          console.log(res);
+          if (res.data.orderstatus == 1) {
+            this.$router.push({
+              path: "/pay",
+              query: res.data
+            });
+          } else {
+            this.$message(res.errorMsg);
+          }
+        });
+      } else {
+        this.$message("请输入收款金额！");
+      }
+    }
   }
 };
 </script>
 
 <style lang="less" scoped>
+.head {
+  background: #fff;
+  margin: 20px;
+  padding: 14px;
+  &-title {
+    font-size: 12px;
+    color: #666;
+  }
+}
 .pos {
   background: #fafafa;
   position: absolute;
@@ -82,13 +114,42 @@ html {
   background: #fafafa;
   height: 100%;
 }
-
+@keyframes fades {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.1;
+  }
+}
 .num {
-  margin: 50px 20px;
+  margin: 0;
   background: #fff;
-  padding: 10px 20px;
+  padding: 10px 0 0;
   font-size: 30px;
   color: #444;
+  display: flex;
+  align-items: center;
+
+  sub {
+    position: relative;
+    font-size: 32px;
+    &:after {
+      position: absolute;
+      right: -4px;
+      top: 7px;
+      bottom: 7px;
+      width: 2px;
+      background: #000;
+      content: "";
+      display: block;
+      animation: fades 0.5s ease-in-out infinite;
+    }
+  }
+  b {
+    font-size: 20px;
+    margin-right: 8px;
+  }
 }
 
 .keyborder {
@@ -100,8 +161,8 @@ html {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
-  height: 200px;
+  bottom: 50px;
+  height: 240px;
   background: #fff;
 }
 
@@ -115,9 +176,13 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 55px;
+    height: 60px;
     font-size: 24px;
     position: relative;
+    transition: 0.4s;
+    &:hover {
+      background: #eee;
+    }
     &:after {
       content: "";
       position: absolute;
@@ -153,8 +218,11 @@ html {
   }
   .ico {
     font-size: 22px;
-    height: 55px;
+    height: 60px;
     position: relative;
+    &:hover {
+      background: #eee;
+    }
     &:after {
       content: "";
       position: absolute;
@@ -168,7 +236,7 @@ html {
     }
   }
   .check {
-    height: 55 * 3px;
+    height: 60 * 3px;
     font-size: 24px;
     font-weight: 800;
     padding: 0 10px;
